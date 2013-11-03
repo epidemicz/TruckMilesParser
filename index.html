@@ -1,0 +1,49 @@
+<!doctype html>
+<html ng-app="MyApp">
+  <head>
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script src="app.js"></script>
+    <title>Truck Miles Parser</title>
+  </head>
+  <body>
+    <div ng-controller="MainController">
+      <div class="container" style="margin-top:50px;">
+        <div class="jumbotron">
+          <h1>Truck Miles by State</h1>
+          <p>Paste route data from <a href="http://www.truckmiles.com/">TruckMiles</a> into the textarea below and click "Parse!"</p>
+          <p>Example data:</p>
+          <pre class="well">
+Go 0.3 miles on Local in LA to I-10	0:01
+Go West 25.0 miles on I-10 in LA to Jct I-10 & I-55, Exit 210, by LAPLACE LA	0:28
+Go North 67.4 miles on I-55 in LA to I-55 LA-MS BORDER	1:41
+Go North 94.6 miles on I-55 in MS to Jct I-55 & US-51, Exit 44, in JACKSON MS	3:25
+Go North 1.5 miles on US-51 in MS to Jct US-51 & Local	3:28
+Go 0.2 miles on Local in MS to Destination	3:28</pre>
+          
+          <textarea style="width:100%; font-size:small;" rows="7" ng-model="data"></textarea><br/>
+          <button class="btn btn-primary btn-block" style="margin-top:10px;" ng-click="parse(data)">Parse!</button><br/>
+          
+          <!--<p class="well">{{result}}</p>-->
+          
+          <table class="table table-striped" ng-show="result">
+            <tr>
+              <th>State</th>
+              <th>Miles</th>
+            </tr>
+            <tr ng-repeat="item in result">
+              <td>{{item.state}}</td>
+              <td>{{item.miles}}</td>
+            </tr>
+            <tr>
+              <td class="pull-right"><strong>Total: </strong></td>
+              <td>{{totalMiles}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
