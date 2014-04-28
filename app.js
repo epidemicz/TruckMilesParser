@@ -5,61 +5,61 @@ myApp.controller('MainController', function ($scope) {
     $scope.totalMiles = 0;
     
 	$scope.sum = function(data) {
-    var result = 0;
+        var result = 0;
+        
+        for (var i = 0; i < data.length; i++) {
+          result += parseFloat(data[i].miles);
+        }
     
-    for (var i = 0; i < data.length; i++) {
-      result += parseFloat(data[i].miles);
-    }
-    
-    $scope.totalMiles = result;
+        $scope.totalMiles = result;
 	};
 
 	$scope.parse = function(data) {
-    if (data === undefined)
-        return;
-        
-		// regex 
-		var exp = /(\S*)\smiles.*\sin\s([A-Z]{2})\sto/;
-		
-		// break down into each line
-		var lines = data.split("\n");
+        if (data === undefined) { return; }
 
-		// result 
-		// structure = { "miles" : 10, "state" : "LA" }
-		var result = [];
+    	// regex 
+    	var exp = /(\S*)\smiles.*\sin\s([A-Z]{2})\sto/;
+    	
+    	// break down into each line
+    	var lines = data.split("\n");
 
-		for (var i = 0; i < lines.length; i++) {
-      var exists = false;
-			var parse = lines[i].match(exp);
-			
-			if (parse !== null) {
-				// lookup state
-				// if state already exists, add the miles
-				// otherwise, push this data to the result array
-				for (var j = 0; j < result.length; j++) {
-					if (result[j].state.substring(0, 2) === parse[2]) {
-						var oldMiles = parseFloat(result[j].miles);
-						var newMiles = parseFloat(parse[1]);
-						result[j].miles = (oldMiles + newMiles).toFixed(2);
-						exists = true;
-						break;
-					}
-				}
-				
-				if (!exists) {
-          var miles = parse[1];
-          var stateAbbrev = parse[2];
-          // push to result array
-          result.push ({ "miles" : miles, "state" : stateAbbrev + " - " + convert_state(stateAbbrev, "name") });
-				}
-			}
-		}
+    	// result 
+    	// structure = { "miles" : 10, "state" : "LA" }
+    	var result = [];
+
+    	for (var i = 0; i < lines.length; i++) {
+            var exists = false;
+    		var parse = lines[i].match(exp);
+    		
+    		if (parse !== null) {
+    			// lookup state
+    			// if state already exists, add the miles
+    			// otherwise, push this data to the result array
+    			for (var j = 0; j < result.length; j++) {
+    				if (result[j].state.substring(0, 2) === parse[2]) {
+    					var oldMiles = parseFloat(result[j].miles);
+    					var newMiles = parseFloat(parse[1]);
+    					result[j].miles = (oldMiles + newMiles).toFixed(2);
+    					exists = true;
+    					break;
+    				}
+    			}
+    			
+    			if (!exists) {
+                    var miles = parse[1];
+                    var stateAbbrev = parse[2];
+                    // push to result array
+                    result.push ({ "miles" : miles, "state" : stateAbbrev + " - " + convert_state(stateAbbrev, "name") });
+    			}
+            }
+        }
 		
-    if (result !== null)
-        $scope.sum(result);
-            
-		$scope.result = result;
-	};
+        if (result !== null) {
+            $scope.sum(result);
+        }
+                
+	   $scope.result = result;
+    }
 });
 
 
